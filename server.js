@@ -5,22 +5,21 @@ var socketIO = require('socket.io');
 var app = express();
 var server = http.Server(app);
 var io = socketIO(server);
-app.set('port', 5000);
+var server_port = process.env.PORT || process.env.PORT || 80;
+var server_host = process.env.HOST || '0.0.0.0';
 app.use('/static', express.static(__dirname + '/static'));
 // Routing
 app.get('/', function(request, response) {
   response.sendFile(path.join(__dirname, '/static/index.html'));
 });
 // Starts the server.
-server.listen(5000, function() {
+server.listen(process.env.PORT, function() {
   console.log('Starting server on port 5000');
 });
 // Add the WebSocket handlers
 io.on('connection', function(socket) {
 });
-setInterval(function() {
-  io.sockets.emit('message', 'hi!');
-}, 1000);
+
 
 var players = {};
 io.on('connection', function(socket) {
