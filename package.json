@@ -1,0 +1,26 @@
+{
+  "name": "klanpenguis",
+  "version": "1.0.0",
+  "description": "none",
+  "main": "index.js",
+  "scripts": {
+    "test": "start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goodiesohhi/klanpenguis.git"
+  },
+  "keywords": [
+    "none"
+  ],
+  "author": "goodiesohhi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/goodiesohhi/klanpenguis/issues"
+  },
+  "homepage": "https://github.com/goodiesohhi/klanpenguis#readme",
+  "dependencies": {
+    "express": "^4.15.4",
+    "socket.io": "^2.0.3"
+  }
+}
