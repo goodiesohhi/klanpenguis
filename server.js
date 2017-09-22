@@ -20,6 +20,10 @@ server.listen(server_port, function() {
 // Add the WebSocket handlers
 io.on('connection', function(socket) {
 });
+String.prototype.trunc = String.prototype.trunc ||
+      function(n){
+          return (this.length > n) ? this.substr(0, n-1) + '' : this;
+      };
 
 
 var players = {};
@@ -28,6 +32,8 @@ io.on('connection', function(socket) {
     players[socket.id] = {
       x: 300,
       y: 300,
+	  
+	  name:"nobody",
 	  message: "",
     };
   });
@@ -53,7 +59,8 @@ io.on('connection', function(socket) {
   socket.on('msg', function(data) {
     var player = players[socket.id] || {};
     
-      player.message = data;
+      player.message = data.message.trunc(75);
+	  player.name = data.name.trunc(15);
     
     
   });

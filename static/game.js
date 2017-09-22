@@ -7,6 +7,11 @@ var movement = {
   right: false,
   chat: false
 }
+var message = {
+  name: "",
+  message:"",
+  
+}
 document.addEventListener('keydown', function(event) {
   switch (event.keyCode) {
     case 37: // A
@@ -49,9 +54,10 @@ document.addEventListener('keyup', function(event) {
 socket.emit('new player');
 setInterval(function() {
 	
-  message = document.getElementById('chatbox').value;
+  message.message = document.getElementById('chatbox').value;
+  message.name = document.getElementById('namebox').value;
   socket.emit('movement', movement);
-  socket.emit('msg', message )
+  socket.emit('msg', message );
 }, 1000 / 60);
 
 
@@ -60,17 +66,18 @@ setInterval(function() {
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext("2d");
 canvas.width = 800;
-canvas.height = 600;
+canvas.height = 450;
 var context = canvas.getContext('2d');
 socket.on('state', function(players) {
-  context.clearRect(0, 0, 800, 600);
-  context.fillStyle = 'green';
+  context.clearRect(0, 0, 800, 450);
+  context.fillStyle = 'black';
   for (var id in players) {
     var player = players[id];
 	
     context.beginPath();
-    context.arc(player.x-20, player.y, 10, 0, 2 * Math.PI);
-	ctx.fillText(player.message,player.x,player.y);
+    context.arc(player.x, player.y, 15, 0, 2 * Math.PI);
+	ctx.fillText(player.message,player.x+20,player.y);
+	ctx.fillText(player.name,player.x-10-(player.name.length*1.488),player.y-20);
     context.fill();
   }
 });
