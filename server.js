@@ -7,13 +7,14 @@ var server = http.Server(app);
 var io = socketIO(server);
 var server_port = process.env.PORT || process.env.PORT || 80;
 var server_host = process.env.HOST || '0.0.0.0';
+var testport = 5000;
 app.use('/static', express.static(__dirname + '/static'));
 // Routing
 app.get('/', function(request, response) {
   response.sendFile(path.join(__dirname, '/static/index.html'));
 });
 // Starts the server.
-server.listen(process.env.PORT, function() {
+server.listen(server_port, function() {
   console.log('Starting server on port 5000');
 });
 // Add the WebSocket handlers
@@ -26,7 +27,8 @@ io.on('connection', function(socket) {
   socket.on('new player', function() {
     players[socket.id] = {
       x: 300,
-      y: 300
+      y: 300,
+	  message: "",
     };
   });
   socket.on('movement', function(data) {
@@ -43,6 +45,17 @@ io.on('connection', function(socket) {
     if (data.down) {
       player.y += 5;
     }
+	if (data.chat) {
+		io.sockets.emit('message', player.message);
+	}
+  });
+  
+  socket.on('msg', function(data) {
+    var player = players[socket.id] || {};
+    
+      player.message = data;
+    
+    
   });
 });
 setInterval(function() {
