@@ -32,27 +32,41 @@ io.on('connection', function(socket) {
     players[socket.id] = {
       x: 300,
       y: 300,
+	  timeout:0,
 	  
 	  name:"nobody",
 	  message: "",
     };
   });
+  socket.on('disconnect', function() {
+    delete players[socket.id];
+  });
   socket.on('movement', function(data) {
+	  
+	
+
     var player = players[socket.id] || {};
+	
+	
     if (data.left) {
       player.x -= 5;
+
     }
     if (data.up) {
       player.y -= 5;
+	  
     }
     if (data.right) {
       player.x += 5;
+	 
     }
     if (data.down) {
       player.y += 5;
+	
     }
 	if (data.chat) {
 		io.sockets.emit('message', player.message);
+		
 	}
   });
   
@@ -65,6 +79,9 @@ io.on('connection', function(socket) {
     
   });
 });
+
+
 setInterval(function() {
   io.sockets.emit('state', players);
+  
 }, 1000 / 60);

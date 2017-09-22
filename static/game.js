@@ -54,13 +54,17 @@ document.addEventListener('keyup', function(event) {
 socket.emit('new player');
 setInterval(function() {
 	
+
+	
+	
   message.message = document.getElementById('chatbox').value;
   message.name = document.getElementById('namebox').value;
   socket.emit('movement', movement);
   socket.emit('msg', message );
+ 
 }, 1000 / 60);
 
-
+ 
 //
 
 var canvas = document.getElementById('canvas');
@@ -79,6 +83,14 @@ socket.on('state', function(players) {
 	ctx.fillText(player.message,player.x+20,player.y);
 	ctx.fillText(player.name,player.x-10-(player.name.length*1.488),player.y-20);
     context.fill();
+	setInterval(function() {
+	
+//socket.disconnect()
+	
+ 
+ 
+}, 1000);
+
   }
 });
 
