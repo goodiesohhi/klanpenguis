@@ -1,5 +1,6 @@
 var socket = io();
-
+var MDown = false;
+var Color = 'blue';
 var movement = {
   up: false,
   down: false,
@@ -12,6 +13,8 @@ var message = {
   message:"",
   
 }
+
+
 document.addEventListener('keydown', function(event) {
   switch (event.keyCode) {
     case 37: // A
@@ -72,6 +75,38 @@ var ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 450;
 var context = canvas.getContext('2d');
+Canvas.onselectstart = function() { return false; };
+Canvas.unselectable = "on";
+Canvas.style.MozUserSelect = "none";
+
+Canvas.onmousedown = function(e) {
+    MDown = true;
+    Context.strokeStyle = Color;
+    Context.lineWidth = 3;
+    Context.lineCap = 'round';
+    Context.beginPath();
+    Context.moveTo(e.pageX - Position(Canvas).left, e.pageY - 5);
+}
+
+Canvas.onmouseup = function() { MDown = false; };
+
+Canvas.onmousemove = function(e) { 
+    if (MDown) {
+        Context.lineTo(e.pageX - Position(Canvas).left, e.pageY - 5);
+        Context.stroke();
+    }
+}
+
+function Position(el) {
+    var position = {left: 0, top: 0};
+    if (el) {
+        if (!isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+            position.left += el.offsetLeft;
+            position.top += el.offsetTop;
+        }
+    }
+    return position;
+}
 socket.on('state', function(players) {
   context.clearRect(0, 0, 800, 450);
   context.fillStyle = 'black';
